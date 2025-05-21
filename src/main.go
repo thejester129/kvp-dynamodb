@@ -39,7 +39,7 @@ func getByKey(c *gin.Context) {
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, item)
+	respondWithItem(c, http.StatusOK, item)
 }
 
 func putItem(c *gin.Context) {
@@ -53,8 +53,14 @@ func putItem(c *gin.Context) {
 	}
 
 	newItem["key"] = key
-	putTableItem(c, newItem)
-	c.IndentedJSON(http.StatusCreated, newItem)
+	err := putTableItem(c, newItem)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	respondWithItem(c, http.StatusOK, newItem)
 }
 
 func patchItem(c *gin.Context) {
@@ -75,7 +81,7 @@ func patchItem(c *gin.Context) {
 		return
 	}
 
-	c.IndentedJSON(http.StatusCreated, updated)
+	respondWithItem(c, http.StatusCreated, updated)
 }
 
 func deleteItem(c *gin.Context) {
@@ -88,5 +94,10 @@ func deleteItem(c *gin.Context) {
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, nil)
+	respondWithItem(c, http.StatusOK, JsonItem{})
+}
+
+func respondWithItem(c *gin.Context, status int, item JsonItem) {
+	delete(item, "key")
+	c.IndentedJSON(status, item)
 }

@@ -21,11 +21,3 @@ aws dynamodb create-table \
 --provisioned-throughput ReadCapacityUnits=10,WriteCapacityUnits=5 \
 --no-cli-pager
 
-
-# --some test commands--
-
-# aws dynamodb scan --endpoint-url http://localhost:4566 --region us-east-1 --table-name kvp-table
-
-# aws dynamodb put-item --region us-east-1 --endpoint-url http://localhost:4566 --table-name linn-api-user-persistence-table --item '{ "accountId": {"S": "123"}, "domain": {"S": "manage-systems"}, "seen_notifications" : { "NS" : ["1"] } }'
-
-# aws dynamodb get-item --region us-east-1 --endpoint-url http://localhost:4566  --table-name linn-api-user-persistence-table --key '{"accountId": {"S": "123"}, "domain":{"S": "manage-systems"} }'
